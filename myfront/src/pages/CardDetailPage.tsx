@@ -23,7 +23,7 @@ const CardDetailPage = () => {
   });
 
   const titleValue = watch('title') || '';
-  const descriptionValue = watch('description') || '';
+  const contentValue = watch('content') || '';
 
   const onSubmit: SubmitHandler<AddCardType> = (data) => {
     reset(data);
@@ -32,8 +32,8 @@ const CardDetailPage = () => {
   };
 
   const handleCancel = () => {
-    reset(); // 원래 값으로 복원
     setIsEditing(false);
+    navigate('/');
   };
 
   return (
@@ -109,15 +109,15 @@ const CardDetailPage = () => {
                 disabled={!isEditing}
                 className={clsx(
                   'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed',
-                  errors.description && 'border-red-500 focus:border-gray-400',
+                  errors.content && 'border-red-500 focus:border-gray-400',
                 )}
-                {...register('description')}
+                {...register('content')}
               />
               <div className='flex items-center text-sm'>
-                {errors.description && (
-                  <p className='text-red-500 text-left'>{errors.description.message}</p>
+                {errors.content && (
+                  <p className='text-red-500 text-left'>{errors.content.message}</p>
                 )}
-                <p className='text-gray-400 ml-auto'>{descriptionValue.length}/50</p>
+                <p className='text-gray-400 ml-auto'>{contentValue.length}/50</p>
               </div>
             </div>
 
@@ -133,7 +133,7 @@ const CardDetailPage = () => {
             </div>
           </div>
 
-          <div className='flex gap-3 p-6 border-t border-gray-200'>
+          <div className='flex flex-col gap-3 p-6 border-t border-gray-200'>
             {!isEditing ? (
               <button
                 type='button'
@@ -144,13 +144,6 @@ const CardDetailPage = () => {
               </button>
             ) : (
               <>
-                <button
-                  type='button'
-                  onClick={handleCancel}
-                  className='flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors'
-                >
-                  취소
-                </button>
                 <button
                   type='submit'
                   className={clsx(
@@ -164,6 +157,13 @@ const CardDetailPage = () => {
                 </button>
               </>
             )}
+            <button
+              type='button'
+              onClick={handleCancel}
+              className='flex-1 bg-red-600 border text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors'
+            >
+              삭제
+            </button>
           </div>
         </form>
       </div>

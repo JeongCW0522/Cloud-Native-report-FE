@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -6,13 +6,37 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { addCardSchema, type AddCardType } from '@/schema/cardAddSchema';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { postLinks } from '@/api/links';
+import { postUpload } from '@/api/upload';
 
 interface CardAddModalProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CardAddModal = ({ setIsModalOpen }: CardAddModalProps) => {
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const imageUrl = await postUpload(file);
+      setUploadedImage(imageUrl);
+    } catch (err) {
+      alert('이미지 업로드에 실패했습니다.');
+      console.error(err);
+    }
+  };
 
   const {
     register,
@@ -26,12 +50,32 @@ const CardAddModal = ({ setIsModalOpen }: CardAddModalProps) => {
   });
 
   const titleValue = watch('title') || '';
-  const descriptionValue = watch('description') || '';
+  const contentValue = watch('content') || '';
+
+  const { mutate: createLinks } = useMutation({
+    mutationFn: postLinks,
+    onSuccess: () => {
+      alert('링크가 성공적으로 추가되었습니다!');
+      setIsModalOpen(false);
+      setUploadedImage(null);
+      reset();
+      navigate('/');
+      queryClient.invalidateQueries({ queryKey: ['links'] });
+    },
+    onError: () => {
+      alert('링크 추가를 실패했습니다.');
+    },
+  });
 
   const onSubmit: SubmitHandler<AddCardType> = (data) => {
-    reset();
-    navigate('/');
-    console.log('카드 추가 성공: ', data);
+    const newCard = {
+      url: data.url,
+      title: data.title,
+      content: data.content,
+      thumbnail: uploadedImage ?? null,
+    };
+
+    createLinks(newCard);
   };
 
   return (
@@ -48,6 +92,32 @@ const CardAddModal = ({ setIsModalOpen }: CardAddModalProps) => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='p-6 space-y-3'>
+            <div className='text-center'>
+              {uploadedImage ? (
+                <img
+                  src={uploadedImage}
+                  alt='업로드된 이미지'
+                  className='absolute w-56 h-56 object-cover rounded-lg cursor-pointer transition-all duration-300 -translate-x-12 z-10'
+                  onClick={handleImageClick}
+                />
+              ) : (
+                <button
+                  type='button'
+                  onClick={handleImageClick}
+                  className='bg-gray-400 w-50 h-50 text-gray-700 text-7xl rounded-xl hover:brightness-90 transition cursor-pointer'
+                >
+                  +
+                </button>
+              )}
+
+              <input
+                type='file'
+                accept='image/*'
+                ref={fileInputRef}
+                className='hidden'
+                onChange={handleFileChange}
+              />
+            </div>
             <div>
               <label className='block text-sm font-medium text-gray-700 mb-2'>
                 URL<span className='text-red-500'>*</span>
@@ -97,19 +167,19 @@ const CardAddModal = ({ setIsModalOpen }: CardAddModalProps) => {
                 maxLength={50}
                 className={clsx(
                   'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500',
-                  errors.description && 'border-red-500 focus:border-gray-400',
+                  errors.content && 'border-red-500 focus:border-gray-400',
                 )}
-                {...register('description')}
+                {...register('content')}
               />
               <div className='flex items-center text-sm'>
-                {errors.description && (
-                  <p className='text-red-500 text-left'>{errors.description.message}</p>
+                {errors.content && (
+                  <p className='text-red-500 text-left'>{errors.content.message}</p>
                 )}
-                <p className='text-gray-400 ml-auto'>{descriptionValue.length}/50</p>
+                <p className='text-gray-400 ml-auto'>{contentValue.length}/50</p>
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <label className='block text-sm font-medium text-gray-700 mb-2'>태그</label>
               <input
                 type='text'
@@ -117,7 +187,7 @@ const CardAddModal = ({ setIsModalOpen }: CardAddModalProps) => {
                 className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
                 {...register('tag')}
               />
-            </div>
+            </div> */}
           </div>
 
           <div className='flex gap-3 p-6 border-t border-gray-200'>
