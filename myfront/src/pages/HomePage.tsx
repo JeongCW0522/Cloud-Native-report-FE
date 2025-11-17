@@ -34,11 +34,11 @@ export default function HomePage() {
           {isLoading ? (
             <div className='flex flex-col items-center gap-4 mt-20'>
               <div className='w-10 h-10 border-4 border-gray-400 border-t-transparent rounded-full animate-spin' />
-              <p className='text-gray-300 text-lg'>Loading...</p>
+              <p className='text-gray-500 text-lg'>Loading...</p>
             </div>
           ) : isError ? (
             <div className='flex flex-col items-center gap-4 mt-20'>
-              <p className='text-gray-300 text-lg'>에러가 발생했습니다.</p>
+              <p className='text-gray-500 text-lg'>에러가 발생했습니다.</p>
             </div>
           ) : (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>

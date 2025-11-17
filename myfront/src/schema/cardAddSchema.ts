@@ -10,7 +10,7 @@ export const addCardSchema = z.object({
     .string()
     .min(2, '설명은 2자 이상, 50자 이하여야 합니다.')
     .max(50, '설명은 50자 이하여야 합니다.'),
-  tag: z.string().optional(),
+  // tag: z.string().optional(),
 });
 
 export type AddCardType = z.infer<typeof addCardSchema>;

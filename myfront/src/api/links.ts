@@ -14,3 +14,24 @@ export const getLinks = async (search?: string): Promise<ResponseLinkList> => {
 
   return data;
 };
+
+export const getLinkDetail = async (linkId: number): Promise<ResponseCreateLink> => {
+  const { data } = await axiosLinkInstance.get(`/v1/links/${linkId}`);
+
+  return data;
+};
+
+export const updateLinkDetail = async (
+  linkId: number,
+  linkData: createLink,
+): Promise<ResponseCreateLink> => {
+  const { data } = await axiosLinkInstance.patch(`/v1/links/${linkId}`, linkData);
+
+  return data;
+};
+
+export const deleteLinkDetail = async (linkId: number) => {
+  const { data } = await axiosLinkInstance.delete(`/v1/links/${linkId}`);
+
+  return data;
+};
