@@ -4,6 +4,7 @@ import { getAllLinks } from "../controllers/link-list.controller.js";
 import { getLinkDetail } from "../controllers/link-detail.controller.js";
 import { deleteLink } from "../controllers/lint-delete.controller.js";
 import { updateLink } from "../controllers/link-edit.controller.js";
+import { toggleFavorite } from "../controllers/link-favorite.controller.js";
 
 const router = express.Router();
 
@@ -21,5 +22,8 @@ router.patch("/links/:id", updateLink);
 
 // DELETE /v1/links/:id - 링크 삭제
 router.delete("/links/:id", deleteLink);
+
+// PATCH /v1/links/:id/favorite
+router.patch("/links/:id/favorite", toggleFavorite);
 
 export default router;

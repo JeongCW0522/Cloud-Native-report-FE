@@ -35,3 +35,10 @@ export const deleteLinkDetail = async (linkId: number) => {
 
   return data;
 };
+
+export const updateFavorite = async (id: number, favorite: boolean) => {
+  const { data } = await axiosLinkInstance.patch(`/v1/links/${id}/favorite`, {
+    favorite,
+  });
+  return data;
+};

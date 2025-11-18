@@ -42,9 +42,11 @@ export default function HomePage() {
             </div>
           ) : (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {data?.data.map((link, idx) => (
-                <Card key={idx} link={link} />
-              ))}
+              {data?.data
+                .filter((link) => (filter === 'favorites' ? link.favorite : true))
+                .map((link) => (
+                  <Card key={link.id} link={link} />
+                ))}
             </div>
           )}
 

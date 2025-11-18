@@ -6,10 +6,7 @@ export const addCardSchema = z.object({
     .string()
     .min(2, '제목을 2자 이상, 20자 이하여야 합니다.')
     .max(20, '제목은 20자 이하여야 합니다.'),
-  content: z
-    .string()
-    .min(2, '설명은 2자 이상, 50자 이하여야 합니다.')
-    .max(50, '설명은 50자 이하여야 합니다.'),
+  content: z.string().max(50, '설명은 50자 이하여야 합니다.').optional(),
   // tag: z.string().optional(),
 });
 

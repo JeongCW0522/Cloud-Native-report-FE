@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import errorHandler from "./middleware/errorHandler.js";
 import router from "./routes/link.route.js";
+import uploadRouter from "./routes/upload.route.js";
 
 const app = express();
 const PORT = 8002;
@@ -11,6 +12,10 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
+// 업로드된 파일 접근 가능하게 설정
+app.use("/uploads", express.static("uploads"));
+
+app.use("/v1", uploadRouter);
 app.use("/v1", router);
 
 app.use(errorHandler);

@@ -92,19 +92,19 @@ const CardAddModal = ({ setIsModalOpen }: CardAddModalProps) => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='p-6 space-y-3'>
-            <div className='text-center'>
+            <div className='flex flex-row gap-5 items-center'>
               {uploadedImage ? (
                 <img
                   src={uploadedImage}
                   alt='업로드된 이미지'
-                  className='absolute w-56 h-56 object-cover rounded-lg cursor-pointer transition-all duration-300 -translate-x-12 z-10'
+                  className='min-w-50 h-50 object-cover rounded-lg cursor-pointer hover:brightness-75 transition-all'
                   onClick={handleImageClick}
                 />
               ) : (
                 <button
                   type='button'
                   onClick={handleImageClick}
-                  className='bg-gray-400 w-50 h-50 text-gray-700 text-7xl rounded-xl hover:brightness-90 transition cursor-pointer'
+                  className='bg-gray-400 min-w-50 h-50 text-gray-700 text-7xl rounded-xl hover:brightness-90 transition cursor-pointer'
                 >
                   +
                 </button>
@@ -117,6 +117,9 @@ const CardAddModal = ({ setIsModalOpen }: CardAddModalProps) => {
                 className='hidden'
                 onChange={handleFileChange}
               />
+              <p className='text-gray-500 text-sm leading-relaxed'>
+                썸네일을 추가하지 않으면 기본 이미지로 저장됩니다.
+              </p>
             </div>
             <div>
               <label className='block text-sm font-medium text-gray-700 mb-2'>

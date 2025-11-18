@@ -1,5 +1,6 @@
 import db from "../config/db.js";
 
+// 링크 수정
 export const updateLink = async (req, res, next) => {
   try {
     const { id } = req.params;

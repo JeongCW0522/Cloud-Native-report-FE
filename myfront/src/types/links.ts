@@ -30,3 +30,8 @@ export type Link = {
 };
 
 export type ResponseLinkList = CommonResponse<Link[]>;
+
+export type ResponseFavorite = CommonResponse<{
+  id: number;
+  favorite: boolean;
+}>;

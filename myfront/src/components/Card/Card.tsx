@@ -2,15 +2,29 @@ import type { Link } from '@/types/links';
 import React, { useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateFavorite } from '@/api/links';
 
 const Card = ({ link }: { link: Link }) => {
   const [isStarred, setIsStarred] = useState(link.favorite);
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
+  const { mutate: toggleFavorite } = useMutation({
+    mutationFn: ({ id, favorite }: { id: number; favorite: boolean }) =>
+      updateFavorite(id, favorite),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['links'] });
+    },
+  });
+
   const toggleStar = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsStarred((prev) => !prev);
+    const newValue = !isStarred;
+    setIsStarred(newValue);
+
+    toggleFavorite({ id: link.id, favorite: newValue });
   };
 
   return (
