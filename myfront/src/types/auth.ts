@@ -7,7 +7,6 @@ export type RequestLogin = {
 
 export type ResponseLogin = CommonResponse<{
   id: number;
-  email: string;
   name: string;
 }>;
 
@@ -21,6 +20,15 @@ export type ResponseSignup = CommonResponse<{
   id: number;
   name: string;
   email: string;
+  createAt: Date;
+  updatedAt: Date;
+}>;
+
+export type ResponseUserInfo = CommonResponse<{
+  id: number;
+  name: string;
+  email: string;
+  password: string;
   createAt: Date;
   updatedAt: Date;
 }>;

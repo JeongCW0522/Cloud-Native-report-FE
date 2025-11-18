@@ -100,7 +100,6 @@ const CardDetailPage = () => {
   const contentValue = watch('content') || '';
 
   const onSubmit: SubmitHandler<AddCardType> = (data) => {
-    console.log(data);
     mutateUpdate({
       url: data.url,
       title: data.title,
@@ -152,7 +151,11 @@ const CardDetailPage = () => {
           <div className='p-6 space-y-3'>
             <div className='flex flex-row gap-5 items-center'>
               <img
-                src={uploadedImage ?? linkData?.data.thumbnail ?? '/default.jpg'}
+                src={
+                  uploadedImage ??
+                  linkData?.data.thumbnail ??
+                  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=300&fit=crop'
+                }
                 alt='thumbnail'
                 className={clsx(
                   'min-w-50 h-50 object-cover rounded-lg transition-all',

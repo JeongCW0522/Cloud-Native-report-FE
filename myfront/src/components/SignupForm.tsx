@@ -34,10 +34,11 @@ const SignupForm = () => {
       const { passwordConfirm, ...rest } = data;
       await postSignup(rest);
 
-      alert('회원가입 성공');
+      alert('회원가입에 성공했습니다.');
       navigate('/login');
     } catch (err) {
       console.error(err);
+      alert('회원가입에 실패했습니다.');
     }
   };
 

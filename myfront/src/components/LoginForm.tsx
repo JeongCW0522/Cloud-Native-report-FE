@@ -4,9 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginType } from '@/schema/authSchema';
 import { useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
+import { postLogin } from '@/api/auth';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -17,8 +21,16 @@ const LoginForm = () => {
     mode: 'onChange',
   });
 
-  const onSubmit: SubmitHandler<LoginType> = (data) => {
-    console.log('로그인 성공: ', data);
+  const onSubmit: SubmitHandler<LoginType> = async (data) => {
+    try {
+      await postLogin(data);
+
+      alert('로그인에 성공했습니다.');
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      alert('로그인에 실패했습니다.');
+    }
   };
 
   return (

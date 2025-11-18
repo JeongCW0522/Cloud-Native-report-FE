@@ -6,6 +6,7 @@ import { FaRegStar } from 'react-icons/fa6';
 import clsx from 'clsx';
 import { useNavigate, useLocation } from 'react-router-dom';
 import type React from 'react';
+import { postLogout } from '@/api/auth';
 
 interface SideBarProps {
   setFilter: React.Dispatch<React.SetStateAction<'all' | 'favorites'>>;
@@ -16,6 +17,12 @@ const SideBar = ({ setFilter, currentFilter }: SideBarProps) => {
   const isSidebarOpen = useAtomValue(isSidebarOpenAtom);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleLogout = async () => {
+    await postLogout();
+    alert('로그아웃 되었습니다.');
+    navigate('/login');
+  };
 
   return (
     <aside
@@ -69,7 +76,10 @@ const SideBar = ({ setFilter, currentFilter }: SideBarProps) => {
       </div>
 
       <div className='p-4 border-t border-gray-200'>
-        <button className='w-full flex justify-center items-center gap-2 px-4 py-3 text-red-600 font-medium rounded-lg hover:bg-red-50 transition'>
+        <button
+          onClick={handleLogout}
+          className='w-full flex justify-center items-center gap-2 px-4 py-3 text-red-600 font-medium rounded-lg hover:bg-red-50 transition'
+        >
           로그아웃
         </button>
       </div>

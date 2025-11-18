@@ -104,7 +104,7 @@ const CardAddModal = ({ setIsModalOpen }: CardAddModalProps) => {
                 <button
                   type='button'
                   onClick={handleImageClick}
-                  className='bg-gray-400 min-w-50 h-50 text-gray-700 text-7xl rounded-xl hover:brightness-90 transition cursor-pointer'
+                  className='bg-gray-300 min-w-50 h-50 text-gray-500 text-7xl rounded-xl hover:brightness-90 transition cursor-pointer'
                 >
                   +
                 </button>
