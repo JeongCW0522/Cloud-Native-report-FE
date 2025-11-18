@@ -1,6 +1,8 @@
 // server.js
 import express from "express";
 import cors from "cors";
+import errorHandler from "./middleware/errorHandler.js";
+import router from "./routes/user.route.js";
 
 const app = express();
 const PORT = 8001;
@@ -8,6 +10,8 @@ const PORT = 8001;
 // JSON 형식의 요청을 처리할 수 있도록 설정
 app.use(express.json());
 app.use(cors());
+app.use("/v1", router);
+app.use(errorHandler);
 
 // 테스트
 app.get("/health", (req, res) => {

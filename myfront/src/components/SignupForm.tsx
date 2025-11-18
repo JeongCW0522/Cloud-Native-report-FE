@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, type SignupType } from '../schema/authSchema';
 import { useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
+import { postSignup } from '@/api/auth';
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,9 +28,17 @@ const SignupForm = () => {
     mode: 'onChange',
   });
 
-  const onSubmit: SubmitHandler<SignupType> = (data) => {
-    console.log('회원가입 성공:', data);
-    navigate('/login');
+  const onSubmit: SubmitHandler<SignupType> = async (data) => {
+    try {
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      const { passwordConfirm, ...rest } = data;
+      await postSignup(rest);
+
+      alert('회원가입 성공');
+      navigate('/login');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

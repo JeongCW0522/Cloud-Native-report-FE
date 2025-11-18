@@ -10,3 +10,17 @@ export type ResponseLogin = CommonResponse<{
   email: string;
   name: string;
 }>;
+
+export type RequestSignup = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type ResponseSignup = CommonResponse<{
+  id: number;
+  name: string;
+  email: string;
+  createAt: Date;
+  updatedAt: Date;
+}>;
