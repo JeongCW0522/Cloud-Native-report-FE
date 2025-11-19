@@ -138,7 +138,7 @@ const SignupForm = () => {
         </button>
         <div className='flex flex-row justify-center items-center gap-2'>
           <p>이미 계정이 있으신가요?</p>
-          <a href='/login' className='text-purple-900'>
+          <a href='/login' className='text-purple-900 hover:underline'>
             로그인
           </a>
         </div>

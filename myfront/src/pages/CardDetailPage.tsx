@@ -10,6 +10,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteLinkDetail, getLinkDetail, updateLinkDetail } from '@/api/links';
 import type { createLink } from '@/types/links';
 import { postUpload } from '@/api/upload';
+import { PiArrowSquareOutBold } from 'react-icons/pi';
 
 const CardDetailPage = () => {
   const navigate = useNavigate();
@@ -198,9 +199,10 @@ const CardDetailPage = () => {
             <button
               type='button'
               onClick={() => window.open(linkData?.data.url, '_blank')}
-              className='flex-1 w-full bg-blue-500 border text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors'
+              className='flex items-center justify-center gap-2 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors'
             >
-              링크 이동
+              <PiArrowSquareOutBold size={22} />
+              <span>링크 이동</span>
             </button>
 
             <div>

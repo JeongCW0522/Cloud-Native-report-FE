@@ -14,7 +14,11 @@ const storage = multer.diskStorage({
   },
 });
 
-export const upload = multer({ storage }).single("file");
+// multer에 limits 옵션 추가 (파일 최대 5MB)
+export const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+}).single("file");
 
 // 실제 이미지 업로드 처리
 export const uploadImage = (req, res) => {
@@ -26,9 +30,14 @@ export const uploadImage = (req, res) => {
     });
   }
 
-  const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${
-    req.file.filename
-  }`;
+  // 환경변수 PUBLIC_URL이 있으면 절대 URL 사용 (운영 서버)
+  // 없으면 기존 방식 사용 (로컬 개발)
+  const PUBLIC_URL = process.env.PUBLIC_URL;
+  const hostUrl = PUBLIC_URL
+    ? PUBLIC_URL
+    : `${req.protocol}://${req.get("host")}`;
+
+  const imageUrl = `${hostUrl}/uploads/${req.file.filename}`;
 
   return res.status(201).json({
     status: true,

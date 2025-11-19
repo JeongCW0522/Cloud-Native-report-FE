@@ -90,7 +90,7 @@ const LoginForm = () => {
         </button>
         <div className='flex flex-row justify-center items-center gap-2'>
           <p>계정이 없으신가요?</p>
-          <a href='/signup' className='text-purple-900'>
+          <a href='/signup' className='text-purple-900 hover:underline'>
             회원가입
           </a>
         </div>

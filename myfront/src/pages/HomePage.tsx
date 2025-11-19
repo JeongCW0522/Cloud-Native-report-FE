@@ -5,7 +5,7 @@ import Footer from '@/components/layouts/Footer';
 import CardAddModal from '@/components/CardAddModal';
 import { FiPlus } from 'react-icons/fi';
 import Card from '@/components/Card/Card';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getLinks } from '@/api/links';
 import { useAtom } from 'jotai';
@@ -16,9 +16,22 @@ export default function HomePage() {
   const [filter, setFilter] = useState<'all' | 'favorites'>('all');
   const [search] = useAtom(searchAtom);
 
+  const navigate = useNavigate();
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['links', search],
-    queryFn: () => getLinks(search),
+    queryFn: async () => {
+      try {
+        return await getLinks(search);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        // 401 에러 체크 → 로그인 페이지로 이동
+        if (err?.response?.status === 401) {
+          navigate('/login');
+        }
+        throw err;
+      }
+    },
     gcTime: 100 * 60 * 10,
     staleTime: 1000 * 60 * 5,
   });
