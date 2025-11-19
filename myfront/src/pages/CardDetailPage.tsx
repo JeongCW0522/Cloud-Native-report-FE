@@ -142,8 +142,9 @@ const CardDetailPage = () => {
         <div className='flex items-center justify-between p-6 border-b border-gray-200'>
           <h2 className='text-xl font-bold text-gray-800'>상세 정보</h2>
           <button
+            type='button'
             onClick={() => navigate('/')}
-            className='hover:bg-gray-100 rounded-lg transition-colors'
+            className='hover:bg-gray-100 rounded-lg transition-colors cursor-pointer'
           >
             <AiOutlineClose size={24} />
           </button>
@@ -199,7 +200,7 @@ const CardDetailPage = () => {
             <button
               type='button'
               onClick={() => window.open(linkData?.data.url, '_blank')}
-              className='flex items-center justify-center gap-2 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors'
+              className='flex items-center justify-center gap-2 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer'
             >
               <PiArrowSquareOutBold size={22} />
               <span>링크 이동</span>
@@ -249,17 +250,6 @@ const CardDetailPage = () => {
                 <p className='text-gray-400 ml-auto'>{contentValue.length}/50</p>
               </div>
             </div>
-
-            {/* <div>
-              <label className='block text-sm font-medium text-gray-700 mb-2'>태그</label>
-              <input
-                type='text'
-                placeholder='태그를 쉼표로 구분하여 입력하세요'
-                disabled={!isEditing}
-                className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed'
-                {...register('tag')}
-              />
-            </div> */}
           </div>
 
           <div className='flex flex-row gap-3 p-6 border-t border-gray-200'>
@@ -271,14 +261,14 @@ const CardDetailPage = () => {
                     e.preventDefault();
                     setIsEditing(true);
                   }}
-                  className='flex-1 bg-blue-500 border text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors'
+                  className='flex-1 bg-blue-500 border text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer'
                 >
                   정보 수정
                 </button>
                 <button
                   type='button'
                   onClick={handleDelete}
-                  className='flex-1 bg-red-700 border text-white py-2 px-4 rounded-lg hover:bg-red-800 transition-colors'
+                  className='flex-1 bg-gray-700 border text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer'
                 >
                   삭제
                 </button>

@@ -45,8 +45,9 @@ const HeaderBar = () => {
       <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
         <div className='flex items-center gap-3'>
           <button
+            type='button'
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className='p-2 hover:bg-gray-100 rounded-lg transition'
+            className='p-2 hover:bg-gray-100 rounded-lg transition cursor-pointer'
           >
             <RxHamburgerMenu size={24} className='text-gray-700' />
           </button>

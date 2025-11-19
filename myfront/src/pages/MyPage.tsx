@@ -102,8 +102,9 @@ const MyPage = () => {
         <div className='flex items-center justify-between p-6 border-b border-gray-200'>
           <h2 className='text-xl font-bold text-gray-800'>마이페이지</h2>
           <button
+            type='button'
             onClick={() => navigate(-1)}
-            className='hover:bg-gray-100 rounded-lg transition-colors'
+            className='hover:bg-gray-100 rounded-lg transition-colors cursor-pointer'
           >
             <AiOutlineClose size={24} />
           </button>
@@ -183,7 +184,7 @@ const MyPage = () => {
                 <button
                   type='button'
                   onClick={() => setIsEditing(true)}
-                  className='flex-1 bg-blue-500 border text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors'
+                  className='flex-1 bg-blue-500 border text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer'
                 >
                   정보 수정
                 </button>
@@ -192,14 +193,14 @@ const MyPage = () => {
                   <button
                     type='button'
                     onClick={handleCancel}
-                    className='flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors'
+                    className='flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer'
                   >
                     취소
                   </button>
                   <button
                     type='submit'
                     className={clsx(
-                      'flex-1 px-4 py-3 bg-blue-600 rounded-lg',
+                      'flex-1 px-4 py-3 bg-blue-600 rounded-lg cursor-pointer',
                       isValid
                         ? 'hover:brightness-80 transition text-white cursor-pointer'
                         : 'brightness-60 text-gray-400 cursor-not-allowed',

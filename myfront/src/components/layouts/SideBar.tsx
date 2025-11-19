@@ -39,9 +39,10 @@ const SideBar = ({ setFilter, currentFilter }: SideBarProps) => {
         <h2 className='text-xl font-bold text-gray-800 mb-6'>Menu</h2>
         <nav className='space-y-2'>
           <button
+            type='button'
             onClick={() => setFilter('all')}
             className={clsx(
-              'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition whitespace-nowrap',
+              'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition whitespace-nowrap cursor-pointer',
               location.pathname === '/' && currentFilter === 'all'
                 ? 'text-gray-700 bg-blue-50 hover:bg-blue-100'
                 : 'text-gray-600 hover:bg-gray-100',
@@ -52,9 +53,10 @@ const SideBar = ({ setFilter, currentFilter }: SideBarProps) => {
           </button>
 
           <button
+            type='button'
             onClick={() => setFilter('favorites')}
             className={clsx(
-              'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition whitespace-nowrap',
+              'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition whitespace-nowrap cursor-pointer',
               location.pathname === '/' && currentFilter === 'favorites'
                 ? 'text-gray-700 bg-blue-50 hover:bg-blue-100'
                 : 'text-gray-600 hover:bg-gray-100',
@@ -65,9 +67,10 @@ const SideBar = ({ setFilter, currentFilter }: SideBarProps) => {
           </button>
 
           <button
+            type='button'
             onClick={() => navigate('/mypage')}
             className={clsx(
-              'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition whitespace-nowrap',
+              'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition whitespace-nowrap cursor-pointer',
               location.pathname === '/mypage'
                 ? 'text-gray-700 bg-blue-50 hover:bg-blue-100'
                 : 'text-gray-600 hover:bg-gray-100',
@@ -81,8 +84,9 @@ const SideBar = ({ setFilter, currentFilter }: SideBarProps) => {
 
       <div className='p-4 border-t border-gray-200'>
         <button
+          type='button'
           onClick={handleLogout}
-          className='w-full flex justify-center items-center gap-2 px-4 py-3 text-red-600 font-medium rounded-lg hover:bg-red-50 transition'
+          className='w-full flex justify-center items-center gap-2 px-4 py-3 text-red-600 font-medium rounded-lg hover:bg-red-50 transition cursor-pointer'
         >
           로그아웃
         </button>

@@ -43,7 +43,7 @@ const Card = ({ link }: { link: Link }) => {
         />
         <button
           onClick={toggleStar}
-          className='absolute top-2 right-3 p-2 text-yellow-400 hover:text-yellow-500 transition'
+          className='absolute top-2 right-3 p-2 text-yellow-400 hover:text-yellow-500 transition cursor-pointer'
         >
           {isStarred ? <FaStar size={24} /> : <FaRegStar size={24} />}
         </button>
