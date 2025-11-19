@@ -7,6 +7,9 @@ import { sessionMiddleware } from "./middleware/session.js";
 const app = express();
 const PORT = 8001;
 
+// Redis 세션 적용!
+app.use(sessionMiddleware);
+
 // JSON 형식의 요청을 처리할 수 있도록 설정
 app.use(express.json());
 app.use(
@@ -15,9 +18,6 @@ app.use(
     credentials: true,
   })
 );
-
-// Redis 세션 적용!
-app.use(sessionMiddleware);
 
 app.use("/v1", router);
 app.use(errorHandler);

@@ -3,18 +3,23 @@ import cors from "cors";
 import errorHandler from "./middleware/errorHandler.js";
 import router from "./routes/link.route.js";
 import uploadRouter from "./routes/upload.route.js";
+import { sessionMiddleware } from "./middleware/session.js";
 
 const app = express();
 const PORT = 8002;
+
+// Redis 세션 적용!
+app.use(sessionMiddleware);
 
 // JSON 형식의 요청을 처리할 수 있도록 설정
 app.use(express.json());
 app.use(
   cors({
-    origin: true,
+    origin: ["http://insightbox.com"],
     credentials: true,
   })
 );
+
 app.use(express.urlencoded({ extended: true }));
 
 // 업로드된 파일 접근 가능하게 설정

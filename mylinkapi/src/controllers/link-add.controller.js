@@ -3,6 +3,19 @@ import db from "../config/db.js";
 // 링크 추가
 export const createLink = async (req, res, next) => {
   try {
+    // 🔒 1) 세션 확인 (로그인 여부)
+    if (!req.session || !req.session.user) {
+      return res.status(401).json({
+        status: false,
+        statusCode: 401,
+        message: "로그인이 필요합니다.",
+        data: null,
+      });
+    }
+
+    // 🔑 2) 세션에서 userId 가져오기
+    const userId = req.session.user.id;
+
     const { url, title, content, thumbnail, favorite } = req.body;
 
     // 필수 필드 검증
@@ -14,11 +27,18 @@ export const createLink = async (req, res, next) => {
       });
     }
 
-    // 데이터베이스에 삽입
+    // 🔐 3) userId 포함해서 INSERT
     const [result] = await db.query(
-      `INSERT INTO links (url, title, content, thumbnail, favorite) 
-       VALUES (?, ?, ?, ?, ?)`,
-      [url, title, content || null, thumbnail || null, favorite || false]
+      `INSERT INTO links (userId, url, title, content, thumbnail, favorite) 
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        userId,
+        url,
+        title,
+        content || null,
+        thumbnail || null,
+        favorite || false,
+      ]
     );
 
     // 생성된 링크 조회

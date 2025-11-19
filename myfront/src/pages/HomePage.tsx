@@ -5,7 +5,7 @@ import Footer from '@/components/layouts/Footer';
 import CardAddModal from '@/components/CardAddModal';
 import { FiPlus } from 'react-icons/fi';
 import Card from '@/components/Card/Card';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getLinks } from '@/api/links';
 import { useAtom } from 'jotai';
@@ -15,8 +15,6 @@ export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filter, setFilter] = useState<'all' | 'favorites'>('all');
   const [search] = useAtom(searchAtom);
-
-  const navigate = useNavigate();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['links', search],
@@ -49,21 +47,6 @@ export default function HomePage() {
                 ))}
             </div>
           )}
-
-          <div className='flex justify-center items-center gap-5'>
-            <button
-              onClick={() => navigate('/login')}
-              className='px-3 py-2 border-2 border-blue-600 rounded-xl font-semibold'
-            >
-              로그인
-            </button>
-            <button
-              onClick={() => navigate('/signup')}
-              className='px-3 py-2 bg-blue-600 border-2 border-blue-600 rounded-xl text-white font-semibold'
-            >
-              회원가입
-            </button>
-          </div>
           <Footer />
         </main>
       </div>

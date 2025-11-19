@@ -1,21 +1,39 @@
 import db from "../config/db.js";
 
-// 링크 전체 조회
+// 링크 전체 조회 (세션 검사 + 사용자별 데이터 필터링)
 export const getAllLinks = async (req, res, next) => {
   try {
-    const { search } = req.query;
-
-    let query = `SELECT id, url, title, content, thumbnail, favorite, createdAt, updatedAt FROM links`;
-    let params = [];
-
-    // 🔍 검색어가 있을 경우 WHERE 조건 추가
-    if (search && search.trim() !== "") {
-      const likeValue = `%${search}%`;
-      query += ` WHERE (title LIKE ? OR content LIKE ?) `;
-      params = [likeValue, likeValue, likeValue];
+    // 🔒 1) 세션 체크
+    if (!req.session || !req.session.user) {
+      return res.status(401).json({
+        status: false,
+        statusCode: 401,
+        message: "로그인이 필요합니다.",
+        data: null,
+      });
     }
 
-    // ⭐ 최신순 정렬 (createdAt DESC)
+    // 🔑 2) 세션에서 userId 가져오기
+    const userId = req.session.user.id;
+
+    const { search } = req.query;
+
+    // 기본 쿼리: 로그인한 사용자 본인의 링크만 조회
+    let query = `
+      SELECT id, url, title, content, thumbnail, favorite, createdAt, updatedAt 
+      FROM links
+      WHERE userId = ?
+    `;
+    let params = [userId];
+
+    // 🔍 검색어 있을 때
+    if (search && search.trim() !== "") {
+      const likeValue = `%${search}%`;
+      query += ` AND (title LIKE ? OR content LIKE ?)`;
+      params.push(likeValue, likeValue);
+    }
+
+    // 최신순 정렬
     query += ` ORDER BY createdAt DESC`;
 
     const [rows] = await db.query(query, params);
