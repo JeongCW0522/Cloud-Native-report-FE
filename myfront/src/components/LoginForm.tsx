@@ -6,10 +6,11 @@ import { useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import { postLogin } from '@/api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const {
@@ -24,6 +25,7 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
     try {
       await postLogin(data);
+      queryClient.clear();
 
       alert('로그인에 성공했습니다.');
       navigate('/');

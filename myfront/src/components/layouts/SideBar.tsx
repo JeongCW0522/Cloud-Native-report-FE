@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { useNavigate, useLocation } from 'react-router-dom';
 import type React from 'react';
 import { postLogout } from '@/api/auth';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface SideBarProps {
   setFilter: React.Dispatch<React.SetStateAction<'all' | 'favorites'>>;
@@ -17,9 +18,12 @@ const SideBar = ({ setFilter, currentFilter }: SideBarProps) => {
   const isSidebarOpen = useAtomValue(isSidebarOpenAtom);
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
 
   const handleLogout = async () => {
     await postLogout();
+    queryClient.clear();
+
     alert('로그아웃 되었습니다.');
     navigate('/login');
   };
