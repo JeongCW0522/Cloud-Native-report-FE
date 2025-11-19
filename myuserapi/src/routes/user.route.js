@@ -3,7 +3,7 @@ import { postSignup } from "../controllers/signup.controller.js";
 import { postLogin } from "../controllers/login.controller.js";
 import { postLogout } from "../controllers/logout.controller.js";
 import { getUserInfo } from "../controllers/user.controller.js";
-import { patchUserInfo } from "../controllers/user-edit.controller.js";
+import { updateUserInfo } from "../controllers/user-edit.controller.js";
 
 const router = express.Router();
 
@@ -20,6 +20,6 @@ router.post("/auth/logout", postLogout);
 router.get("/users/me", getUserInfo);
 
 // PATCH /v1/users - 정보 수정
-router.patch("/users", patchUserInfo);
+router.patch("/users", updateUserInfo);
 
 export default router;

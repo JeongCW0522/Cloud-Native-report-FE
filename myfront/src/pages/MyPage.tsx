@@ -9,13 +9,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { myPageSchema, type myPageType } from '@/schema/myPagaSchema';
 import clsx from 'clsx';
-import { useQuery } from '@tanstack/react-query';
-import { getUserInfo } from '@/api/auth';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getUserInfo, updateUserInfo } from '@/api/auth';
 import { getLinks } from '@/api/links';
 
 const MyPage = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -38,9 +39,18 @@ const MyPage = () => {
 
   const { data: userData } = useQuery({
     queryKey: ['userInfo'],
-    queryFn: getUserInfo,
-    gcTime: 1000 * 60 * 10,
-    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      try {
+        return await getUserInfo();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        if (err?.response?.status === 401) {
+          alert('권한이 없는 요청입니다. 로그인해주세요.');
+          navigate('/login', { replace: true });
+        }
+        throw err;
+      }
+    },
   });
 
   useEffect(() => {
@@ -52,10 +62,32 @@ const MyPage = () => {
     }
   }, [userData, reset]);
 
+  const { mutate: updateUser } = useMutation({
+    mutationFn: (body: { name: string; email: string }) => updateUserInfo(body),
+    onSuccess: () => {
+      alert('정보 수정에 성공했습니다.');
+      setIsEditing(false);
+      queryClient.invalidateQueries({ queryKey: ['userInfo'] });
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (err: any) => {
+      if (err?.response?.status === 409) {
+        alert('이미 존재하는 이메일입니다.');
+      } else {
+        alert('정보 수정에 실패했습니다.');
+      }
+      reset();
+      setIsEditing(false);
+    },
+  });
+
   const onSubmit: SubmitHandler<myPageType> = (data) => {
-    alert('변경사항이 저장되었습니다.');
-    console.log('저장된 데이터:', data);
-    reset(data); // 저장 후 상태 초기화
+    const updatedData = {
+      name: data.name,
+      email: data.email,
+    };
+
+    updateUser(updatedData);
     setIsEditing(false);
   };
 

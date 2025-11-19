@@ -4,6 +4,8 @@ import { useAtom } from 'jotai';
 import { isSidebarOpenAtom, searchAtom } from '@/atom';
 import { useEffect, useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
+import { useQuery } from '@tanstack/react-query';
+import { getUserInfo } from '@/api/auth';
 
 const HeaderBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
@@ -12,6 +14,12 @@ const HeaderBar = () => {
   // 사용자의 실시간 입력값 (디바운스 전)
   const [inputValue, setInputValue] = useState(search);
   const debouncedValue = useDebounce(inputValue, 500);
+
+  const { data: userData } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: () => getUserInfo(),
+    retry: false,
+  });
 
   useEffect(() => {
     setSearch(debouncedValue);
@@ -43,9 +51,11 @@ const HeaderBar = () => {
             <RxHamburgerMenu size={24} className='text-gray-700' />
           </button>
 
-          <h1 className='text-2xl font-bold text-gray-800 whitespace-nowrap'>
-            정찬원님 반갑습니다!
-          </h1>
+          {userData?.data?.name && (
+            <h1 className='text-2xl font-bold text-gray-800 whitespace-nowrap'>
+              {userData.data.name}님 반갑습니다!
+            </h1>
+          )}
         </div>
 
         <div className='flex items-center gap-4'>

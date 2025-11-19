@@ -21,10 +21,11 @@ export const postLogout = async (req, res) => {
         });
       }
 
-      console.log("세션 삭제 성공:", req.sessionID);
-
       // 클라이언트에 쿠키 제거
-      res.clearCookie("connect.sid", {
+      res.clearCookie("sid", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
         path: "/",
       });
 

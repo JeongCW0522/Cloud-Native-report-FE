@@ -36,8 +36,12 @@ const SignupForm = () => {
 
       alert('회원가입에 성공했습니다.');
       navigate('/login');
-    } catch (err) {
-      console.error(err);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err.response?.status === 409) {
+        alert('이미 존재하는 이메일입니다.');
+        return;
+      }
       alert('회원가입에 실패했습니다.');
     }
   };

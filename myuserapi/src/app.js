@@ -11,7 +11,7 @@ const PORT = 8001;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://insightbox.com", "http://localhost:3000"],
+    origin: ["http://insightbox.com"],
     credentials: true,
   })
 );

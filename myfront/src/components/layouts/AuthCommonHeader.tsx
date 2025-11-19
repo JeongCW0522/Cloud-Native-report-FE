@@ -12,7 +12,7 @@ const AuthCommonHeader = ({ title, description }: AuthHeaderProps) => {
   return (
     <div className='relative'>
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/')}
         className='absolute right-55 text-lg font-semibold hover:bg-gray-300 rounded-full transition'
       >
         <IoChevronBackOutline size={24} />

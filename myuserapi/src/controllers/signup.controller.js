@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import pool from "../config/db.js"; // MySQL 연결 모듈
+import db from "../config/db.js"; // MySQL 연결 모듈
 
 export const postSignup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -15,7 +15,7 @@ export const postSignup = async (req, res) => {
 
   try {
     // 2) 이메일 중복 체크
-    const [existingUser] = await pool.query(
+    const [existingUser] = await db.query(
       "SELECT id FROM users WHERE email = ?",
       [email]
     );
@@ -31,13 +31,13 @@ export const postSignup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 4) 사용자 등록
-    const [result] = await pool.query(
+    const [result] = await db.query(
       "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
       [name, email, hashedPassword]
     );
 
     // 5) 등록된 사용자 조회
-    const [userRows] = await pool.query(
+    const [userRows] = await db.query(
       "SELECT id, name, email, createdAt, updatedAt FROM users WHERE id = ?",
       [result.insertId]
     );
